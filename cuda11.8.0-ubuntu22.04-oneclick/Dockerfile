@@ -33,6 +33,10 @@ COPY conf-files/passwd /etc/passwd
 
 COPY scripts /root/scripts
 
+RUN pip install fastapi uvicorn sse-starlette
+RUN pip install 'gradio==3.47.*'
+COPY web-ui/extensions/api/streaming_api.py /root/text-generation-webui/extensions/api/streaming_api.py
+
 COPY --chmod=755 start-with-ui.sh /start.sh
 
 WORKDIR /workspace

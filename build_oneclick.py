@@ -10,7 +10,7 @@ logging.basicConfig(
 )
 
 dockerLLM_dir = os.path.dirname(os.path.realpath(__file__))
-username = "thebloke"
+username = "srka99"
 
 def build(docker_repo, tag, from_docker=None):
     docker_container = f"{username}/{docker_repo}:{tag}"
@@ -22,13 +22,14 @@ def build(docker_repo, tag, from_docker=None):
 
     build_command = f"docker build {docker_build_arg} {dockerLLM_dir}/{docker_repo}"
     push_command = f"docker push {docker_container}"
-    
+
     try:
         logger.info(f"Building {docker_repo} using command: {build_command}")
         subprocess.check_call(build_command, shell=True)
 
-        logger.info(f"Pushing {docker_repo} using command: {push_command}")
-        subprocess.check_call(push_command, shell=True)
+        if docker_repo.endswith("oneclick"):
+            logger.info(f"Pushing {docker_repo} using command: {push_command}")
+            subprocess.check_call(push_command, shell=True)
 
         return docker_container
     except subprocess.CalledProcessError as e:
